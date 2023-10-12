@@ -11,16 +11,17 @@ def start_client():
     client_socket.connect((host, port))
 
     while True:  # Loop principal do cliente
-        # Solicita ao usuário que digite uma mensagem
-        message = input("Digite uma mensagem (ou 'tchau' para sair): ")
+        # Mostra o menu de opções
+        menu = """\n
+        1 - Encerrar conexão\n
+        2 - Mostrar banco de dados\n
+        3 - Mostrar gráfico\n"""
 
-        # Envia a mensagem ao servidor
-        client_socket.sendall(message.encode())
+        print(menu)
+        opcao = input("Selecione uma opção: ")
 
         # Se a mensagem for 'tchau', recebe a mensagem de encerramento do servidor, fecha a conexão e termina o cliente
-        if message.lower() == 'tchau':
-            data = client_socket.recv(1024)
-            print(data.decode())
+        if opcao == '1':
             client_socket.close()
             break  # Quebra o loop, encerrando o cliente
 

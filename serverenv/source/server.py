@@ -1,4 +1,7 @@
 import socket  # Importa o módulo socket para criar e gerenciar conexões de rede
+import random
+import time
+import datetime
 
 def start_server():
     host = 'localhost'  # Endereço do host onde o servidor será iniciado
@@ -15,35 +18,22 @@ def start_server():
 
     print(f"Servidor iniciado em {host}:{port}")
 
-    while True:  # Loop principal do servidor
-        # Aceita uma nova conexão de cliente
-        conn, addr = server_socket.accept()
+    # Aceita uma nova conexão de cliente
+    conn, addr = server_socket.accept()
 
-        print(f"Conexão estabelecida com {addr}")
+    print(f"Conexão estabelecida com {addr}\n")
 
-        while True:  # Loop de comunicação com o cliente
-            # Recebe dados do cliente (bloqueia até que os dados sejam recebidos)
-            data = conn.recv(1024)
-
-            # Se não receber dados, quebra o loop (conexão fechada pelo cliente)
-            if not data:
-                break
-
-            # Decodifica os dados recebidos de bytes para string
-            message = data.decode()
-
-            print(f"Mensagem recebida: {message}")
-
-            # Se a mensagem for 'tchau', envia uma mensagem de encerramento, fecha a conexão e termina o servidor
-            if message.lower() == 'tchau':
-                conn.sendall("Servidor encerrado pelo cliente".encode())
-                conn.close()
-                print("Conexão encerrada")
-                return  # Retorna da função, encerrando o servidor
-
-        # Fecha a conexão com o cliente
-        conn.close()
+    while True:  # Loop de comunicação com o cliente
+        try:
+            # Gera números aleatórios entre 20 e 30, imprimindo tal valor e um timestamp
+            random_number = random.uniform(20, 30)
+            print(f"{random_number:.1f} \t {datetime.datetime.now()}")
+            # Aguarda 1 segundo
+            time.sleep(1)
+        except KeyboardInterrupt:
+            # Fecha a conexão em caso de cancelamento da tarefa no terminal, por meio do comando ctrl+c
+            server_socket.close()
+            break
 
 if __name__ == "__main__":  # Verifica se este script é o principal e, em caso afirmativo, inicia o servidor
     start_server()
-
