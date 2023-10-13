@@ -17,7 +17,6 @@ Para configurar o ambiente virtual para o servidor, siga os passos abaixo:
 2. Ative o ambiente virtual:
 
    ```bash
-   source bin/activate  # No Linux/macOS
    .\Scripts\activate  # No Windows
 
 ## 🏃 Executando o Servidor
