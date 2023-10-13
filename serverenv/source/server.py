@@ -26,13 +26,20 @@ def start_server():
     while True:  # Loop de comunicação com o cliente
         try:
             # Gera números aleatórios entre 20 e 30, imprimindo tal valor e um timestamp
-            random_number = random.uniform(20, 30)
-            print(f"{random_number:.1f} \t {datetime.datetime.now()}")
+            random_number = str("{0:.1f}".format(random.uniform(20, 30)))
+            print(f"Temperatura: {random_number} \t Data: {datetime.datetime.now()}")
+            conn.sendall(random_number.encode()) # Envia temperatura para o cliente
             # Aguarda 1 segundo
             time.sleep(1)
         except KeyboardInterrupt:
             # Fecha a conexão em caso de cancelamento da tarefa no terminal, por meio do comando ctrl+c
-            server_socket.close()
+            print("Conexão encerrada")
+            conn.close()
+            break
+        except ConnectionResetError:
+            # Fecha a conexão caso o cliente cancele a tarefa no terminal, por meio do comando ctrl+c
+            print("Conexão encerrada")
+            conn.close()
             break
 
 if __name__ == "__main__":  # Verifica se este script é o principal e, em caso afirmativo, inicia o servidor
