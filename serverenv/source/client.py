@@ -54,8 +54,7 @@ def receive_messages(client_socket):
 def send_options(client_socket):
     while True:
         menu = """\n1 - Encerrar conexão\n
-                \r2 - Mostrar base de dados\n
-                \r3 - Mostrar gráfico\n"""
+                \r2 - Mostrar base de dados\n"""
 
         print(menu)
         opcao = input(">>> ")
