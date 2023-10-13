@@ -1,7 +1,7 @@
 import socket  # Importa o módulo socket para criar e gerenciar conexões de rede
-import random
-import time
-import datetime
+import random # Importa módulo para fornecer números aleatórios
+import time # Importa módulo com recursos de tempo
+import datetime # Importa módulo para fornecer timestamp
 
 def start_server():
     host = 'localhost'  # Endereço do host onde o servidor será iniciado
