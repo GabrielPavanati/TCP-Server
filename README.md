@@ -12,10 +12,10 @@ Welcome to the Temperature Data Client and Server repository, where we provide t
    ```shell
    git clone https://github.com/GabrielPavanati/TCP-Server.git
 
-2. Navigate to the `TCP-Server` directory:
+2. Navigate to the `source` directory:
    
    ```shell
-   cd TCP-Server
+   cd TCP-Server/source
 
 3. Run the server:
 
