@@ -1,34 +1,34 @@
-import socket  # Importa o módulo socket para criar e gerenciar conexões de rede
-import threading # Importa módulo que permite trabalhar com threads 
-import sqlite3 # Importa módulo que permite usar banco de dados SQLite
-import datetime # Importa módulo para fornecer timestamps
-import warnings # importa módulo para suprimir avisos no terminal
+import socket  # Import the socket module for creating and managing network connections
+import threading  # Import the module that allows working with threads
+import sqlite3  # Import the module for using SQLite databases
+import datetime  # Import the module for providing timestamps
+import warnings  # Import the module to suppress warnings in the terminal
 
-# Cria um lock para sincronizar o acesso ao banco de dados
+# Create a lock to synchronize database access
 db_lock = threading.Lock()
 
-# Suprime os avisos de DeprecationWarning relacionados ao adaptador de data e hora
+# Suppress DeprecationWarning related to the datetime adapter
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-# Função para criar a tabela no banco de dados
+# Function to create a table in the database
 def create_table():
-    # Conecta-se ao banco de dados ou cria um novo arquivo 'database.db' se ele não existir
+    # Connect to the database or create a new file 'database.db' if it doesn't exist
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    
-    # Cria uma tabela chamada "temperatura" se ela não existir
+
+    # Create a table called "temperature" if it doesn't exist
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS temperatura (
+        CREATE TABLE IF NOT EXISTS temperature (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            temperatura FLOAT,
-            data_hora DATETIME
+            temperature FLOAT,
+            date_time DATETIME
         )
     """)
-    
-    # Fecha a conexão com o banco de dados
+
+    # Close the database connection
     conn.close()
 
-# Função para receber mensagens do servidor
+# Function to receive messages from the server
 def receive_messages(client_socket):
     while True:
         try:
@@ -36,51 +36,51 @@ def receive_messages(client_socket):
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
 
-            # Adquira o bloqueio antes de escrever no banco de dados para evitar conflitos
+            # Acquire the lock before writing to the database to prevent conflicts
             with db_lock:
-                cursor.execute("INSERT INTO temperatura (temperatura, data_hora) VALUES (?, ?)", (data.decode(), datetime.datetime.now()))
+                cursor.execute("INSERT INTO temperature (temperature, date_time) VALUES (?, ?)", (data.decode(), datetime.datetime.now()))
                 conn.commit()
 
-            # Fecha a conexão com o banco de dados
+            # Close the database connection
             conn.close()
 
             if not data:
                 break
         except Exception as e:
-            print("Erro: ", str(e))
+            print("Error: ", str(e))
             break
 
-# Função para mostrar um menu e selecionar opções
+# Function to display a menu and select options
 def send_options(client_socket):
     while True:
-        menu = """\n1 - Encerrar conexão\n
-                \r2 - Mostrar base de dados\n"""
+        menu = """\n1 - Terminate connection\n
+                \r2 - Show the database\n"""
 
         print(menu)
-        opcao = input(">>> ")
+        option = input(">>> ")
 
-        if opcao == '1':
-            print("Conexão encerrada")
+        if option == '1':
+            print("Connection terminated")
             client_socket.close()
             break
 
-        elif opcao == '2':
+        elif option == '2':
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
 
-            # Adquira o bloqueio antes de ler do banco de dados para evitar conflitos
+            # Acquire the lock before reading from the database to prevent conflicts
             with db_lock:
-                cursor.execute("SELECT * FROM temperatura")
+                cursor.execute("SELECT * FROM temperature")
                 column_names = [description[0] for description in cursor.description]
                 print(column_names)
                 rows = cursor.fetchall()
                 for row in rows:
                     print(row)
 
-            # Fecha a conexão com o banco de dados
+            # Close the database connection
             conn.close()
 
-# Função para iniciar o cliente
+# Function to start the client
 def start_client():
     create_table()
     host = 'localhost'
@@ -94,9 +94,9 @@ def start_client():
     receive_thread.start()
     send_thread.start()
 
-    # Aguarda o término das threads antes de encerrar o programa
+    # Wait for the threads to finish before exiting the program
     receive_thread.join()
     send_thread.join()
 
-if __name__ == "__main__":  # Verifica se este script é o principal e, em caso afirmativo, inicia o cliente
+if __name__ == "__main__":  # Check if this script is the main one and, if so, start the client
     start_client()

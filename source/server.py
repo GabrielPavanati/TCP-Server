@@ -1,51 +1,51 @@
-import socket  # Importa o módulo socket para criar e gerenciar conexões de rede
-import random # Importa módulo para fornecer números aleatórios
-import time # Importa módulo com recursos de tempo
-import datetime # Importa módulo para fornecer timestamp
+import socket  # Import the socket module for creating and managing network connections
+import random  # Import the module to provide random numbers
+import time  # Import the module with time-related features
+import datetime  # Import the module to provide timestamps
 
 def start_server():
-    host = 'localhost'  # Endereço do host onde o servidor será iniciado
-    port = 5000         # Porta onde o servidor estará escutando
+    host = 'localhost'  # Host address where the server will be initiated
+    port = 5000  # Port where the server will listen
 
-    # Cria um novo socket usando o protocolo TCP (SOCK_STREAM)
+    # Create a new socket using the TCP protocol (SOCK_STREAM)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Vincula o socket ao host e porta especificados
+    # Bind the socket to the specified host and port
     server_socket.bind((host, port))
 
-    # Coloca o socket em modo de escuta, aguardando conexões de clientes
+    # Put the socket in listening mode, waiting for client connections
     server_socket.listen()
 
-    print(f"Servidor iniciado em {host}:{port}")
+    print(f"Server started at {host}:{port}")
 
-    # Aceita uma nova conexão de cliente
+    # Accept a new client connection
     conn, addr = server_socket.accept()
 
-    print(f"Conexão estabelecida com {addr}\n")
+    print(f"Connection established with {addr}\n")
 
-    while True:  # Loop de comunicação com o cliente
+    while True:  # Client communication loop
         try:
-            # Gera números aleatórios entre 20 e 30, imprimindo tal valor e um timestamp
+            # Generate random numbers between 20 and 30, print the value and a timestamp
             random_number = str("{0:.1f}".format(random.uniform(20, 30)))
-            print(f"Temperatura: {random_number} \t Data: {datetime.datetime.now()}")
-            conn.sendall(random_number.encode()) # Envia temperatura para o cliente
-            # Aguarda 1 segundo
+            print(f"Temperature: {random_number} \t Date: {datetime.datetime.now()}")
+            conn.sendall(random_number.encode())  # Send temperature to the client
+            # Wait for 1 second
             time.sleep(1)
         except KeyboardInterrupt:
-            # Fecha a conexão em caso de cancelamento da tarefa no terminal, por meio do comando ctrl+c
-            print("Conexão encerrada")
+            # Close the connection in case of task cancellation in the terminal using ctrl+c
+            print("Connection terminated")
             conn.close()
             break
         except ConnectionResetError:
-            # Fecha a conexão caso o cliente cancele a tarefa no terminal, por meio do comando ctrl+c
-            print("Conexão encerrada")
+            # Close the connection if the client cancels the task in the terminal using ctrl+c
+            print("Connection terminated")
             conn.close()
             break
         except BrokenPipeError:
-            # Fecha a conexão caso o cliente cancele a tarefa no terminal, por meio do comando ctrl+c
-            print("Conexão encerrada")
+            # Close the connection if the client cancels the task in the terminal using ctrl+c
+            print("Connection terminated")
             conn.close()
             break
 
-if __name__ == "__main__":  # Verifica se este script é o principal e, em caso afirmativo, inicia o servidor
+if __name__ == "__main__":  # Check if this script is the main one and, if so, start the server
     start_server()
