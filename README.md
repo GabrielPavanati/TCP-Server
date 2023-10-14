@@ -1,46 +1,36 @@
-# 🌡️ Servidor e Cliente TCP em Python
+# 🌡️ Temperature Data Client and Server in Python
 
-Este é um projeto de cliente e servidor TCP em Python que fornece dados de temperatura entre 20 e 30 graus Celsius. O cliente captura esses dados e os salva em um banco de dados SQLite.
+Welcome to the Temperature Data Client and Server repository, where we provide temperature data between 20 and 30 degrees Celsius. This repository includes the following:
 
-## 📋 Estrutura do Repositório
+- `client.py`: Python script for the client.
+- `server.py`: Python script for the server.
 
-O repositório está organizado da seguinte maneira:
+## 🚀 Getting Started
 
-- `serverenv/`: Ambiente virtual Python para o servidor.
-- `serverenv/source/`: Contém os arquivos Python para o cliente e servidor.
+1. Clone this repository to your local machine:
 
-## 🚀 Configuração do Ambiente
+   ```shell
+   git clone https://github.com/GabrielPavanati/TCP-Server.git
 
-Para configurar o ambiente virtual para o servidor, siga os passos abaixo:
-
-1. Navegue até o diretório `serverenv/`.
-2. Ative o ambiente virtual:
-
-   ```bash
-   .\Scripts\activate  # No Windows
-
-## 🏃 Executando o Servidor
-
-Para iniciar o servidor, siga os passos abaixo:
-
-1. Navegue até a pasta `serverenv/source/`.
+2. Navigate to the `TCP-Server` directory:
    
-   ```bash
-   cd serverenv/source/
+   ```shell
+   cd TCP-Server
 
-2. Execute o servidor:
-   
-      ```bash
-     python server.py
+3. Run the server:
 
-O servidor estará pronto para fornecer dados de temperatura.
+   ```shell
+   python server.py
 
-## 📡 Executando o Cliente
+The server will now be listening for incoming client connections.
 
-O cliente pode ser executado com o seguinte comando na pasta `source/`:
+4. In a separate terminal, run the client:
 
-```bash
-python client.py
-```
+   ```shell
+   python client.py
 
-O cliente capturará os dados de temperatura do servidor e os salvará em um banco de dados SQLite.
+The client will capture temperature data from the server and save it.
+
+## 📦 Dependencies
+
+This project doesn't require any external dependencies.
