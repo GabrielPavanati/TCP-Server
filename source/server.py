@@ -41,6 +41,11 @@ def start_server():
             print("Conexão encerrada")
             conn.close()
             break
+        except BrokenPipeError:
+            # Fecha a conexão caso o cliente cancele a tarefa no terminal, por meio do comando ctrl+c
+            print("Conexão encerrada")
+            conn.close()
+            break
 
 if __name__ == "__main__":  # Verifica se este script é o principal e, em caso afirmativo, inicia o servidor
     start_server()
